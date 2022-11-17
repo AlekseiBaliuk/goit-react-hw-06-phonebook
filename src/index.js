@@ -9,13 +9,13 @@ import './index.css';
 import { theme } from './constants';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
           <App />
-        </PersistGate>
-      </Provider>
-    </React.StrictMode>
-  </ThemeProvider>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
 );
