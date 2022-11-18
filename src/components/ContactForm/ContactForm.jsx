@@ -1,57 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { addContact } from 'redux/contactsSlice';
+import { nanoid } from 'nanoid';
 import {
   PhonebookForm,
   PhonebookLabel,
   PhonebookButton,
 } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
 
-export const ContactForm = ({ onSubmitData }) => {
-  // const [name, setName] = useState('');
-  // const [number, setNumber] = useState('');
+export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  // const handleChange = e => {
-  //   const { name, value } = e.target;
-
-  //   switch (name) {
-  //     case 'name':
-  //       setName(value);
-  //       break;
-
-  //     case 'number':
-  //       setNumber(value);
-  //       break;
-
-  //     default:
-  //       return;
-  //   }
-  // };
-
-  // const handleSubmit = e => {
-  //   e.preventDefault();
-  //   const data = { name, number };
-  //   onSubmitData(data);
-  //   reset();
-  // };
-
-  // const reset = () => {
-  //   setName('');
-  //   setNumber('');
-  // };
-
-  const handleSubmit = e => {
+  const formSubmitHandler = e => {
     e.preventDefault();
     const form = e.target;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
 
-    const data = { name, number };
-    onSubmitData(data);
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      return alert(`${name} is already in contacts.`);
+    }
+    dispatch(addContact(contact));
     form.reset();
   };
 
   return (
-    <PhonebookForm onSubmit={handleSubmit}>
+    <PhonebookForm onSubmit={formSubmitHandler}>
       <PhonebookLabel>
         Name
         <input
@@ -75,8 +61,4 @@ export const ContactForm = ({ onSubmitData }) => {
       <PhonebookButton type="submit">Add Contact</PhonebookButton>
     </PhonebookForm>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmitData: PropTypes.func.isRequired,
 };

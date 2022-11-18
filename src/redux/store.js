@@ -12,7 +12,7 @@ import { contactsReducer } from './contactsSlice';
 
 export const store = configureStore({
   reducer: {
-    contacts: contactsReducer,
+    phonebook: contactsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
